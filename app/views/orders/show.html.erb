@@ -1,0 +1,94 @@
+<div class="mb-6">
+  <%= link_to orders_path, class: "flex items-center text-pink-600 hover:underline" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    Retour à mes commandes
+  <% end %>
+</div>
+
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-3xl font-bold">Commande #<%= @order.id %></h1>
+  <div class="<%= @order.paid? ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %> px-3 py-1 rounded-full text-sm font-semibold">
+    <%= @order.status.upcase %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+      <div class="px-6 py-4 bg-gray-50 border-b">
+        <h2 class="font-semibold text-lg">Détails de la commande</h2>
+      </div>
+      <div class="p-6">
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="text-left text-gray-500 text-sm uppercase pb-2">Produit</th>
+              <th class="text-center text-gray-500 text-sm uppercase pb-2">Qté</th>
+              <th class="text-right text-gray-500 text-sm uppercase pb-2">Prix</th>
+              <th class="text-right text-gray-500 text-sm uppercase pb-2">Total</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% @order.order_items.includes(:product).each do |item| %>
+              <tr>
+                <td class="py-4">
+                  <div class="flex items-center">
+                    <img class="h-10 w-10 rounded-full object-cover mr-3" src="<%= item.product.image_url %>" alt="<%= item.product.title %>">
+                    <div class="font-medium text-gray-900"><%= item.product.title %></div>
+                  </div>
+                </td>
+                <td class="py-4 text-center text-gray-500">
+                  <%= item.quantity %>
+                </td>
+                <td class="py-4 text-right text-gray-500">
+                  <%= number_to_currency(item.unit_price, unit: "€") %>
+                </td>
+                <td class="py-4 text-right font-medium text-gray-900">
+                  <%= number_to_currency(item.unit_price * item.quantity, unit: "€") %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="pt-6 text-right font-semibold">Total:</td>
+              <td class="pt-6 text-right font-semibold text-pink-600 text-xl">
+                <%= number_to_currency(@order.total_price, unit: "€") %>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+      <div class="px-6 py-4 bg-gray-50 border-b">
+        <h2 class="font-semibold text-lg">Informations</h2>
+      </div>
+      <div class="p-6">
+        <div class="mb-4">
+          <h3 class="font-semibold text-gray-700 mb-1">Date de commande</h3>
+          <p class="text-gray-600"><%= l @order.created_at, format: :long %></p>
+        </div>
+        
+        <div class="mb-4">
+          <h3 class="font-semibold text-gray-700 mb-1">Email</h3>
+          <p class="text-gray-600"><%= @order.user.email %></p>
+        </div>
+        
+        <div class="mb-4">
+          <h3 class="font-semibold text-gray-700 mb-1">Statut</h3>
+          <p class="<%= @order.paid? ? 'text-green-600' : 'text-yellow-600' %> font-semibold">
+            <%= @order.status.upcase %>
+          </p>
+        </div>
+        
+        <% if @order.paid? %>
+          <div class="bg-green-50 p-4 rounded-md border border-green-200">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

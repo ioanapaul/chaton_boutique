@@ -1,0 +1,73 @@
+<section class="bg-gradient-to-r from-pink-500 to-purple-500 text-white py-16 rounded-lg">
+  <div class="container mx-auto px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Des photos de chatons adorables</h1>
+    <p class="text-xl mb-8">Trouvez votre dose quotidienne de mignonnerie avec nos photos de chatons de haute qualité</p>
+    <%= link_to "Voir nos photos", products_path, class: "px-6 py-3 bg-white text-pink-600 rounded-md font-semibold hover:bg-gray-100" %>
+  </div>
+</section>
+
+<section class="py-12">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">Nos dernières photos</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <% @products.each do |product| %>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+          <%= link_to product_path(product) do %>
+            <img src="<%= product.image_url %>" alt="<%= product.title %>" class="w-full h-48 object-cover">
+          <% end %>
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2"><%= product.title %></h3>
+            <p class="text-gray-500 mb-4"><%= truncate(product.description, length: 80) %></p>
+            <div class="flex justify-between items-center">
+              <span class="text-pink-600 font-bold"><%= number_to_currency(product.price, unit: "€") %></span>
+              <%= link_to "Voir détails", product_path(product), class: "px-3 py-1 bg-pink-100 text-pink-600 rounded-md hover:bg-pink-200" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="text-center mt-8">
+      <%= link_to "Voir toutes nos photos", products_path, class: "px-6 py-3 bg-pink-600 text-white rounded-md font-semibold hover:bg-pink-700" %>
+    </div>
+  </div>
+</section>
+
+<section class="py-12 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">Pourquoi choisir nos photos?</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-center h-16 w-16 bg-pink-100 text-pink-600 rounded-full mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Haute qualité</h3>
+        <p class="text-gray-500 text-center">Toutes nos photos sont prises par des photographes professionnels avec du matériel de qualité.</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-center h-16 w-16 bg-pink-100 text-pink-600 rounded-full mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Livraison instantanée</h3>
+        <p class="text-gray-500 text-center">Recevez vos photos instantanément par email après votre achat.</p>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="flex items-center justify-center h-16 w-16 bg-pink-100 text-pink-600 rounded-full mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-center mb-2">Chatons adorables</h3>
+        <p class="text-gray-500 text-center">Nos chatons sont sélectionnés pour leur charme et leur mignonnerie irrésistibles.</p>
+      </div>
+    </div>
+  </div>
+</section>

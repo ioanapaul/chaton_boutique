@@ -1,0 +1,17 @@
+<section class="bg-gradient-to-r from-pink-500 to-purple-500 text-white py-16 rounded-lg">
+  <div class="container mx-auto px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Des photos de chatons adorables</h1>
+    <p class="text-xl mb-8">Trouvez votre dose quotidienne de mignonnerie avec nos photos de chatons de haute qualité</p>
+    <%= link_to "Voir nos photos", products_path, class: "px-6 py-3 bg-white text-pink-600 rounded-md font-semibold hover:bg-gray-100" %>
+  </div>
+</section>
+
+<section class="py-12">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-8">Nos dernières photos</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <% @products.each do |product| %>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+          <%= link_to product_path(product) do %>
+            <img src="<%= product.image_url %>" alt="

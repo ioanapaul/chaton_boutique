@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kitten Shop - Photos de chatons</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-white shadow-md">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+          <%= link_to root_path, class: "text-2xl font-bold text-pink-600" do %>
+            🐱 Kitten Shop
+          <% end %>
+          <nav class="hidden md:flex space-x-4">
+            <%= link_to "Accueil", root_path, class: "text-gray-700 hover:text-pink-600" %>
+            <%= link_to "Nos Photos", products_path, class: "text-gray-700 hover:text-pink-600" %>
+            <%= link_to "À propos", about_path, class: "text-gray-700 hover:text-pink-600" %>
+          </nav>
+        </div>
+        <div class="flex items-center space-x-4">
+          <% if user_signed_in? %>
+            <%= link_to cart_path, class: "text-gray-700 hover:text-pink-600 relative" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <% if current_user.cart && current_user.cart.cart_items.count > 0 %>
+                <span class="absolute -top-1 -right-1 bg-pink-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  <%= current_user.cart.cart_items.sum(:quantity) %>
+                </span>
+              <% end %>
+            <% end %>
+            <div class="relative group">
+              <button class="flex items-center text-gray-700 hover:text-pink-600">
+                <span class="mr-1"><%= current_user.email %></span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                <%= link_to "Mes commandes", orders_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <% if admin_signed_in? %>
+                  <%= link_to "Administration", admin_dashboard_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <% end %>
+                <%= link_to "Déconnexion", logout_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              </div>
+            </div>
+          <% else %>
+            <%= link_to "Se connecter", login_path, class: "text-gray-700 hover:text-pink-600" %>
+            <%= link_to "S'inscrire", signup_path, class: "px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <% if flash.any? %>
+      <div class="container mx-auto px-4 py-4">
+        <% flash.each do |key, value| %>
+          <div class="<%= key == 'notice' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700' %> px-4 py-3 rounded border mb-4">
+            <%= value %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <main class="container mx-auto px-4 py-6 flex-grow">
+      <%= yield %>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Kitten Shop</h3>
+            <p class="text-gray-400">Les plus belles photos de chatons pour égayer votre journée!</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Liens utiles</h3>
+            <ul class="space-y-2">
+              <%= link_to "À propos", about_path, class: "text-gray-400 hover:text-white block" %>
+              <%= link_to "CGV", terms_path, class: "text-gray-400 hover:text-white block" %>
+              <%= link_to "Politique de confidentialité", privacy_path, class: "text-gray-400 hover:text-white block" %>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Contact</h3>
+            <p class="text-gray-400">Email: contact@kittenshop.fr</p>
+          </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400">
+          <p>&copy; <%= Date.today.year %> Kitten Shop. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
